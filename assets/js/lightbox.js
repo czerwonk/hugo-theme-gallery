@@ -58,6 +58,7 @@ if (gallery) {
     mobileLayoutBreakpoint: 700,
     type: "auto",
     mobileCaptionOverlapRatio: 1,
+    captionContent: (slide) => slide.data.element.dataset.caption || "",
   });
 
   lightbox.init();
