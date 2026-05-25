@@ -61,14 +61,7 @@ if (gallery) {
     captionContent: (slide) => {
       const el = slide.data.element;
       const lines = [el.dataset.captionCamera, el.dataset.captionFilm].filter(Boolean);
-      if (!lines.length) return "";
-      const div = document.createElement("div");
-      lines.forEach((line) => {
-        const p = document.createElement("p");
-        p.textContent = line;
-        div.appendChild(p);
-      });
-      return div;
+      return lines.map((line) => `<p>${line}</p>`).join("");
     },
   });
 
