@@ -1,8 +1,9 @@
-{{ if .Title }}
   <hgroup>
+    <img src="{{ "images/logo.png" | relURL }}" alt="{{ .Site.Title }}">
+{{ if .Title }}
     <h1>{{ .Title }}</h1>
+{{ end }}
     {{ with .Params.Description }}
       <p>{{ . | markdownify }}</p>
     {{ end }}
   </hgroup>
-{{ end }}
