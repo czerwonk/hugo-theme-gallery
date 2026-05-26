@@ -4,9 +4,9 @@
     {{ range $image := where (.Resources.ByType "image") "Params.hidden" "ne" true }}
       {{ $title := "" }}
       {{ $date := "" }}
-      {{ with $image.Exif }}
+      {{ with $image.Meta }}
         {{ $date = .Date }}
-        {{ with .Tags.ImageDescription }}
+        {{ with .Exif.ImageDescription }}
           {{/* Title from EXIF ImageDescription */}}
           {{ $title = . }}
         {{ end }}
@@ -37,9 +37,9 @@
 
     {{ $captionCamera := "" }}
     {{ $captionFilm := "" }}
-    {{ with $image.Exif }}
-      {{ with .Tags.Model }}{{ $captionCamera = print "📸 " . }}{{ end }}
-      {{ with .Tags.UserComment }}{{ $captionFilm = print "🎞️ " . }}{{ end }}
+    {{ with $image.Meta }}
+      {{ with .Exif.Model }}{{ $captionCamera = print "📷 " . }}{{ end }}
+      {{ with .Exif.UserComment }}{{ $captionFilm = print "🎞️ " . }}{{ end }}
     {{ end }}
 
       <a class="gallery-item" href="{{ if $publishResources }}{{ $image.RelPermalink }}{{ else }}{{ $full.RelPermalink }}{{ end }}" data-pswp-src="{{ $full.RelPermalink }}" data-pswp-width="{{ $full.Width }}" data-pswp-height="{{ $full.Height }}" data-pswp-target="{{ $image.Name | urlize }}" title="{{ .Title }}" data-caption-camera="{{ $captionCamera }}" data-caption-film="{{ $captionFilm }}" itemscope itemtype="https://schema.org/ImageObject" style="aspect-ratio: {{ $thumbnail.Width }} / {{ $thumbnail.Height }}">
