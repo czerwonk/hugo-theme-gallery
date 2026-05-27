@@ -1,5 +1,5 @@
 ---
 title: Nikon F3
 params:
-  camera: "Nikon F3"
+  camera: "NIKON F3"
 ---

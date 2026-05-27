@@ -1,6 +1,7 @@
 {{/* Takes a dict: {page, groups, param} */}}
 {{ $equipPage := .page }}
-{{ $entries := index .groups (index $equipPage.Params .param) | default slice }}
+{{ $key := index $equipPage.Params .param | default $equipPage.Title }}
+{{ $entries := index .groups $key | default slice }}
 {{ if gt (len $entries) 0 }}
   {{ $thumbnail := (index $entries 0).image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
   {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
