@@ -1,0 +1,9 @@
+{{ define "main" }}
+  {{ partial "title.html" . }}
+  {{ $groups := partialCached "collect-equipment.html" "camera" "camera" }}
+  <section class="galleries">
+    {{ range .Pages }}
+      {{ partial "equipment-card.html" (dict "page" . "groups" $groups "param" "camera") }}
+    {{ end }}
+  </section>
+{{ end }}

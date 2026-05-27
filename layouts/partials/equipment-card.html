@@ -1,0 +1,16 @@
+{{/* Takes a dict: {page, groups, param} */}}
+{{ $equipPage := .page }}
+{{ $entries := index .groups (index $equipPage.Params .param) | default slice }}
+{{ if gt (len $entries) 0 }}
+  {{ $thumbnail := (index $entries 0).image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
+  {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
+  <a class="card" href="{{ $equipPage.RelPermalink }}" title="{{ $equipPage.Title }}">
+    <figure style="background-color: {{ $color }}">
+      <img class="lazyload" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" data-src="{{ $thumbnail.RelPermalink }}" alt="{{ $equipPage.Title }}" />
+    </figure>
+    <div>
+      <h2>{{ $equipPage.Title }}</h2>
+      <p>{{ T "photoCount" (len $entries | lang.FormatNumber 0) }}</p>
+    </div>
+  </a>
+{{ end }}

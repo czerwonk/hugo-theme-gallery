@@ -1,0 +1,25 @@
+{{/* Input: string "camera" or "lens". Returns dict: name → slice of {image, page}. */}}
+{{ $type := . }}
+{{ $groups := dict }}
+{{ range site.Pages }}
+  {{ $page := . }}
+  {{ range where (.Resources.ByType "image") "Params.hidden" "ne" true }}
+    {{ $image := . }}
+    {{ with $image.Meta }}
+      {{ $key := "" }}
+      {{ if eq $type "camera" }}
+        {{ with .Exif.Model }}{{ $key = . }}{{ end }}
+      {{ else }}
+        {{ $parts := slice }}
+        {{ with .Exif.LensMake }}{{ $parts = $parts | append . }}{{ end }}
+        {{ with .Exif.LensModel }}{{ $parts = $parts | append . }}{{ end }}
+        {{ with delimit $parts " " }}{{ $key = . }}{{ end }}
+      {{ end }}
+      {{ with $key }}
+        {{ $existing := index $groups . | default slice }}
+        {{ $groups = merge $groups (dict . ($existing | append (dict "image" $image "page" $page))) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $groups }}
