@@ -52,6 +52,14 @@ title = "Gallery"
     path = "github.com/nicokaiser/hugo-theme-gallery/v4"
 
 [menu]
+  [[menu.main]]
+    name = "Galleries"
+    identifier = "galleries"
+    weight = 1
+  [[menu.main]]
+    name = "Equipment"
+    identifier = "equipment"
+    weight = 2
   [[menu.footer]]
     name = "GitHub"
     url = "https://github.com/nicokaiser/hugo-theme-gallery/"
