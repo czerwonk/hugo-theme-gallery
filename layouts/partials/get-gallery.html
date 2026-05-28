@@ -9,6 +9,11 @@
   {{ $featured := $cover | default ((.Resources.ByType "image").GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}
   {{ $thumbnail := $featured.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
   {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
+  {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
+  {{ if gt $borderSize 0 }}
+    {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) 1600 }}
+    {{ $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder (site.Params.gallery.borderColor | default "#ffffff")) }}
+  {{ end }}
   {{ $imageCount := 0 }}
   {{ $albumCount := 0 }}
   {{ if .IsPage }}
