@@ -29,35 +29,17 @@
       }}
     {{ end }}
     {{ $publishResources := default true .Params.build.publishResources }}
+    {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
+    {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
     {{ range sort $images (.Params.sort_by | default "Name") (.Params.sort_order | default "asc") }}
-      {{ $image := .image }}
-      {{ $thumbnail := $image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
-      {{ $full := $image.Filter (slice images.AutoOrient (images.Process "fit 1600x1600")) }}
-      {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
-
-    {{ $captionCamera := "" }}
-    {{ $captionFilm := "" }}
-    {{ $captionLens := "" }}
-    {{ with $image.Meta }}
-      {{ with .Exif.Model }}{{ $captionCamera = print "📷 " . }}{{ end }}
-      {{ with .Exif.UserComment }}{{ $captionFilm = print "🎞️ " . }}{{ end }}
-      {{ $lensParts := slice }}
-      {{ with .Exif.LensMake }}{{ $lensParts = $lensParts | append . }}{{ end }}
-      {{ with .Exif.LensModel }}{{ $lensParts = $lensParts | append . }}{{ end }}
-      {{ with delimit $lensParts " " }}{{ $captionLens = print "🔘 " . }}{{ end }}
-    {{ end }}
-
-      <a class="gallery-item" href="{{ if $publishResources }}{{ $image.RelPermalink }}{{ else }}{{ $full.RelPermalink }}{{ end }}" data-pswp-src="{{ $full.RelPermalink }}" data-pswp-width="{{ $full.Width }}" data-pswp-height="{{ $full.Height }}" data-pswp-target="{{ $image.Name | urlize }}" title="{{ .Title }}" data-caption-camera="{{ $captionCamera }}" data-caption-film="{{ $captionFilm }}" data-caption-lens="{{ $captionLens }}" itemscope itemtype="https://schema.org/ImageObject" style="aspect-ratio: {{ $thumbnail.Width }} / {{ $thumbnail.Height }}">
-        <figure style="background-color: {{ $color }}; aspect-ratio: {{ $thumbnail.Width }} / {{ $thumbnail.Height }}">
-          <img class="lazyload" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" data-src="{{ $thumbnail.RelPermalink }}" alt="{{ .Title }}" />
-        </figure>
-        <meta itemprop="contentUrl" content="{{ if $publishResources }}{{ $image.RelPermalink }}{{ else }}{{ $full.RelPermalink }}{{ end }}" />
-        {{ with site.Params.Author }}
-          <span itemprop="creator" itemtype="https://schema.org/Person" itemscope>
-            <meta itemprop="name" content="{{ site.Params.Author.name }}" />
-          </span>
-        {{ end }}
-      </a>
+      {{ partial "gallery-render.html" (dict
+        "image" .image
+        "title" .Title
+        "pswpTarget" (.image.Name | urlize)
+        "publishResources" $publishResources
+        "borderSize" $borderSize
+        "borderColor" $borderColor
+      ) }}
     {{ end }}
   </div>
 </section>

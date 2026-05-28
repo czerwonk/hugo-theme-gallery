@@ -1,12 +1,10 @@
 {{/* Input: slice of {image, page} dicts from collect-equipment.html */}}
 <section class="gallery">
   <div id="gallery" style="visibility: hidden; height: 1px; overflow: hidden">
+    {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
+    {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
     {{ range . }}
       {{ $image := .image }}
-      {{ $thumbnail := $image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
-      {{ $full := $image.Filter (slice images.AutoOrient (images.Process "fit 1600x1600")) }}
-      {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
-
       {{ $title := "" }}
       {{ with $image.Meta }}
         {{ with .Exif.ImageDescription }}{{ $title = . }}{{ end }}
@@ -14,30 +12,14 @@
       {{ if ne $image.Title $image.Name }}
         {{ $title = $image.Title }}
       {{ end }}
-
-      {{ $captionCamera := "" }}
-      {{ $captionFilm := "" }}
-      {{ $captionLens := "" }}
-      {{ with $image.Meta }}
-        {{ with .Exif.Model }}{{ $captionCamera = print "📷 " . }}{{ end }}
-        {{ with .Exif.UserComment }}{{ $captionFilm = print "🎞️ " . }}{{ end }}
-        {{ $lensParts := slice }}
-        {{ with .Exif.LensMake }}{{ $lensParts = $lensParts | append . }}{{ end }}
-        {{ with .Exif.LensModel }}{{ $lensParts = $lensParts | append . }}{{ end }}
-        {{ with delimit $lensParts " " }}{{ $captionLens = print "🔘 " . }}{{ end }}
-      {{ end }}
-
-      <a class="gallery-item" href="{{ $image.RelPermalink }}" data-pswp-src="{{ $full.RelPermalink }}" data-pswp-width="{{ $full.Width }}" data-pswp-height="{{ $full.Height }}" data-pswp-target="{{ .page.File.TranslationBaseName }}-{{ $image.Name | urlize }}" title="{{ $title }}" data-caption-camera="{{ $captionCamera }}" data-caption-film="{{ $captionFilm }}" data-caption-lens="{{ $captionLens }}" itemscope itemtype="https://schema.org/ImageObject" style="aspect-ratio: {{ $thumbnail.Width }} / {{ $thumbnail.Height }}">
-        <figure style="background-color: {{ $color }}; aspect-ratio: {{ $thumbnail.Width }} / {{ $thumbnail.Height }}">
-          <img class="lazyload" width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" data-src="{{ $thumbnail.RelPermalink }}" alt="{{ $title }}" />
-        </figure>
-        <meta itemprop="contentUrl" content="{{ $image.RelPermalink }}" />
-        {{ with site.Params.Author }}
-          <span itemprop="creator" itemtype="https://schema.org/Person" itemscope>
-            <meta itemprop="name" content="{{ site.Params.Author.name }}" />
-          </span>
-        {{ end }}
-      </a>
+      {{ partial "gallery-render.html" (dict
+        "image" $image
+        "title" $title
+        "pswpTarget" (print .page.File.TranslationBaseName "-" ($image.Name | urlize))
+        "publishResources" true
+        "borderSize" $borderSize
+        "borderColor" $borderColor
+      ) }}
     {{ end }}
   </div>
 </section>
