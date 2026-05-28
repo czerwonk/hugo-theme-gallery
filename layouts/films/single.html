@@ -1,0 +1,6 @@
+{{ define "main" }}
+  {{ partial "title.html" . }}
+  {{ $groups := partialCached "collect-equipment.html" "film" "film" }}
+  {{ $entries := index $groups (.Params.film | default .Title) | default slice }}
+  {{ partial "equipment-gallery.html" $entries }}
+{{ end }}

@@ -1,4 +1,4 @@
-{{/* Input: string "camera" or "lens". Returns dict: name → slice of {image, page}. */}}
+{{/* Input: string "camera", "lens", or "film". Returns dict: name → slice of {image, page}. */}}
 {{ $type := . }}
 {{ $groups := dict }}
 {{ range site.Pages }}
@@ -9,6 +9,9 @@
     {{ if eq $type "camera" }}
       {{ with $image.Meta }}{{ with .Exif.Model }}{{ $key = . }}{{ end }}{{ end }}
       {{ if not $key }}{{ with $image.Params.camera }}{{ $key = . }}{{ end }}{{ end }}
+    {{ else if eq $type "film" }}
+      {{ with $image.Meta }}{{ with .Exif.UserComment }}{{ $key = . }}{{ end }}{{ end }}
+      {{ if not $key }}{{ with $image.Params.film }}{{ $key = . }}{{ end }}{{ end }}
     {{ else }}
       {{ with $image.Meta }}
         {{ $parts := slice }}
