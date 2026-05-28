@@ -1,8 +1,6 @@
 {{/* Input: slice of {image, page} dicts from collect-equipment.html */}}
 <section class="gallery">
   <div id="gallery" style="visibility: hidden; height: 1px; overflow: hidden">
-    {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
-    {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
     {{ range . }}
       {{ $image := .image }}
       {{ $title := "" }}
@@ -17,8 +15,6 @@
         "title" $title
         "pswpTarget" (print .page.File.TranslationBaseName "-" ($image.Name | urlize))
         "publishResources" true
-        "borderSize" $borderSize
-        "borderColor" $borderColor
       ) }}
     {{ end }}
   </div>

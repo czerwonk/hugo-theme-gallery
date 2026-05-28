@@ -29,16 +29,12 @@
       }}
     {{ end }}
     {{ $publishResources := default true .Params.build.publishResources }}
-    {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
-    {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
     {{ range sort $images (.Params.sort_by | default "Name") (.Params.sort_order | default "asc") }}
       {{ partial "gallery-render.html" (dict
         "image" .image
         "title" .Title
         "pswpTarget" (.image.Name | urlize)
         "publishResources" $publishResources
-        "borderSize" $borderSize
-        "borderColor" $borderColor
       ) }}
     {{ end }}
   </div>
