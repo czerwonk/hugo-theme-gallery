@@ -60,8 +60,9 @@ if (gallery) {
     mobileCaptionOverlapRatio: 1,
     captionContent: (slide) => {
       const el = slide.data.element;
-      const lines = [el.dataset.captionCamera, el.dataset.captionFilm, el.dataset.captionLens].filter(Boolean);
-      return lines.map((line) => `<p>${line}</p>`).join("");
+      const title = el.title;
+      const meta = [el.dataset.captionCamera, el.dataset.captionFilm, el.dataset.captionLens].filter(Boolean);
+      return (title ? `<p><strong>${title}</strong></p>` : "") + meta.map((line) => `<p>${line}</p>`).join("");
     },
   });
 
