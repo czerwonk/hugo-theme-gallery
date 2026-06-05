@@ -29,6 +29,7 @@ title = "Gallery"
     #whatsapp = "1234567890"
   [params.gallery]
     #fullSize = 2400
+    #recentCount = 50
     #borderSize = 0
     #borderColor = "#ffffff"
     #boxSpacing = 10
