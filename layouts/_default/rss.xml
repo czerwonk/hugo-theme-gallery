@@ -49,7 +49,7 @@
         {{- $thumbnail := $image.Filter (slice images.AutoOrient (images.Process "fill 900x600")) -}}
         {{- $borderSize := site.Params.gallery.borderSize | default 0 | int -}}
         {{- if gt $borderSize 0 -}}
-          {{- $thumbBorder := div (mul $borderSize $thumbnail.Width) 1600 -}}
+          {{- $thumbBorder := div (mul $borderSize $thumbnail.Width) (site.Params.gallery.fullSize | default 1600 | int) -}}
           {{- $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder (site.Params.gallery.borderColor | default "#ffffff")) -}}
         {{- end }}
         <media:content url="{{ $thumbnail.Permalink }}" type="image/jpeg"/>

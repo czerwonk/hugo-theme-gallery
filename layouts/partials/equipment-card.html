@@ -7,7 +7,7 @@
   {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
   {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
   {{ if gt $borderSize 0 }}
-    {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) 1600 }}
+    {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) (site.Params.gallery.fullSize | default 1600 | int) }}
     {{ $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder (site.Params.gallery.borderColor | default "#ffffff")) }}
   {{ end }}
   <a class="card" href="{{ $equipPage.RelPermalink }}" title="{{ $equipPage.Title }}">

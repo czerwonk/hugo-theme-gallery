@@ -1,12 +1,13 @@
 {{/* Input: {image, title, pswpTarget, publishResources} */}}
 {{ $image := .image }}
+{{ $fullSize := site.Params.gallery.fullSize | default 1600 | int }}
 {{ $thumbnail := $image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
-{{ $full := $image.Filter (slice images.AutoOrient (images.Process "fit 1600x1600")) }}
+{{ $full := $image.Filter (slice images.AutoOrient (images.Process (printf "fit %dx%d" $fullSize $fullSize))) }}
 {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
 {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
 {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
 {{ if gt $borderSize 0 }}
-  {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) 1600 }}
+  {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) $fullSize }}
   {{ $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder $borderColor) }}
   {{ $full = $full.Filter (images.Padding $borderSize $borderColor) }}
 {{ end }}

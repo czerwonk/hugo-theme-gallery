@@ -28,6 +28,9 @@ title = "Gallery"
     #500px = "https://500px"
     #whatsapp = "1234567890"
   [params.gallery]
+    #fullSize = 2400
+    #borderSize = 0
+    #borderColor = "#ffffff"
     #boxSpacing = 10
     #targetRowHeight = 288
     #targetRowHeightTolerance = 0.25
