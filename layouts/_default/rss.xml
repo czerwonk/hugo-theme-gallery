@@ -15,9 +15,7 @@
 {{- range $pages -}}
   {{- $page := . -}}
   {{- range where (.Resources.ByType "image") "Params.hidden" "ne" true -}}
-    {{- $date := $page.Date -}}
-    {{- with .Meta }}{{- with .Date }}{{- $date = . -}}{{- end -}}{{- end -}}
-    {{- if .Params.Date }}{{- $date = time .Params.Date -}}{{- end -}}
+    {{- $date := .File.ModTime -}}
     {{- $title := "" -}}
     {{- with .Meta }}{{- with .Exif.ImageDescription }}{{- $title = . -}}{{- end -}}{{- end -}}
     {{- if ne .Title .Name }}{{- $title = .Title -}}{{- end -}}
