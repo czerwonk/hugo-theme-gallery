@@ -34,7 +34,7 @@ title = "Gallery"
 
 [outputs]
   home = ["HTML", "RSS"]
-  page = ["HTML"]
+  page = ["HTML", "RSS"]
   section = ["HTML"]
 
 [imaging]
