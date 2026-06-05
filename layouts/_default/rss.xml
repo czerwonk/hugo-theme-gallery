@@ -16,40 +16,9 @@
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{- end }}
     {{- if .IsPage }}
-      {{- /* Gallery leaf bundle: emit one item per image */}}
-      {{- $page := . -}}
-      {{- $allImages := slice -}}
-      {{- range where (.Resources.ByType "image") "Params.hidden" "ne" true -}}
-        {{- $imgPath := printf "content/%s%s" $page.File.Dir .Name -}}
-        {{- $date := (os.Stat $imgPath).ModTime -}}
-        {{- $title := "" -}}
-        {{- with .Meta }}{{- with .Exif.ImageDescription }}{{- $title = . -}}{{- end -}}{{- end -}}
-        {{- if ne .Title .Name }}{{- $title = .Title -}}{{- end -}}
-        {{- $allImages = $allImages | append (dict "image" . "date" $date "title" $title) -}}
-      {{- end -}}
-      {{- $allImages = sort $allImages "date" "desc" -}}
-      {{- $limit := .Site.Config.Services.RSS.Limit -}}
-      {{- if ge $limit 1 }}{{- $allImages = $allImages | first $limit -}}{{- end }}
-      {{- range $allImages }}
-    <item>
-      <title>{{ with .title }}{{ . }}{{ else }}{{ $page.Title }}{{ end }}</title>
-      <link>{{ $page.Permalink }}</link>
-      <pubDate>{{ .date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-      {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
-      <guid>{{ $page.Permalink }}#{{ .image.Name | urlize }}</guid>
-      {{- $thumbnail := .image.Filter (slice images.AutoOrient (images.Process "fill 900x600")) -}}
-      {{- $borderSize := site.Params.gallery.borderSize | default 0 | int -}}
-      {{- if gt $borderSize 0 -}}
-        {{- $thumbBorder := div (mul $borderSize $thumbnail.Width) 1600 -}}
-        {{- $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder (site.Params.gallery.borderColor | default "#ffffff")) -}}
-      {{- end }}
-      <media:content url="{{ $thumbnail.Permalink }}" type="image/jpeg"/>
-      <description>
-        &lt;img src=&quot;{{ $thumbnail.Permalink }}&quot; /&gt;
-        &lt;p&gt;{{ $page.Title }}&lt;/p&gt;
-      </description>
-    </item>
-      {{- end }}
+      {{- $images := partial "rss-collect-images.html" (dict "pages" (slice .) "limit" .Site.Config.Services.RSS.Limit) -}}
+      {{- with index $images 0 }}<lastBuildDate>{{ .date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+      {{ partial "rss-image-items.html" (dict "images" $images "authorEmail" $authorEmail "authorName" $authorName) }}
     {{- else }}
       {{- /* Section: emit one item per sub-page */}}
       {{- $pctx := . -}}

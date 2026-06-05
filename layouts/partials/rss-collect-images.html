@@ -1,0 +1,16 @@
+{{/* Input: {pages, limit}. Returns sorted slice of {image, page, date, title}. */}}
+{{- $allImages := slice -}}
+{{- range .pages -}}
+  {{- $page := . -}}
+  {{- range where (.Resources.ByType "image") "Params.hidden" "ne" true -}}
+    {{- $imgPath := printf "content/%s%s" $page.File.Dir .Name -}}
+    {{- $date := (os.Stat $imgPath).ModTime -}}
+    {{- $title := "" -}}
+    {{- with .Meta }}{{- with .Exif.ImageDescription }}{{- $title = . -}}{{- end -}}{{- end -}}
+    {{- if ne .Title .Name }}{{- $title = .Title -}}{{- end -}}
+    {{- $allImages = $allImages | append (dict "image" . "page" $page "date" $date "title" $title) -}}
+  {{- end -}}
+{{- end -}}
+{{- $allImages = sort $allImages "date" "desc" -}}
+{{- if ge .limit 1 }}{{- $allImages = $allImages | first .limit -}}{{- end -}}
+{{- return $allImages -}}
