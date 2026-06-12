@@ -4,10 +4,18 @@
 {{ $thumbnail := $image.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
 {{ $full := $image.Filter (slice images.AutoOrient (images.Process (printf "fit %dx%d" $fullSize $fullSize))) }}
 {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
+{{ $origWidth := $thumbnail.Width }}
+{{ $strokeSize := site.Params.gallery.strokeSize | default 0 | int }}
+{{ $strokeColor := site.Params.gallery.strokeColor | default "#000000" }}
 {{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
 {{ $borderColor := site.Params.gallery.borderColor | default "#ffffff" }}
+{{ if gt $strokeSize 0 }}
+  {{ $thumbStroke := div (mul $strokeSize $origWidth) $fullSize }}
+  {{ $thumbnail = $thumbnail.Filter (images.Padding $thumbStroke $strokeColor) }}
+  {{ $full = $full.Filter (images.Padding $strokeSize $strokeColor) }}
+{{ end }}
 {{ if gt $borderSize 0 }}
-  {{ $thumbBorder := div (mul $borderSize $thumbnail.Width) $fullSize }}
+  {{ $thumbBorder := div (mul $borderSize $origWidth) $fullSize }}
   {{ $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder $borderColor) }}
   {{ $full = $full.Filter (images.Padding $borderSize $borderColor) }}
 {{ end }}
