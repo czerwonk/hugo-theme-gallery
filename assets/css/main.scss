@@ -15,6 +15,14 @@
   transition: opacity 300ms;
 }
 
+.card-slide {
+  opacity: 0;
+}
+
+.card-slide:first-child {
+  opacity: 1;
+}
+
 img.lazyload:not([src]) {
   visibility: hidden;
 }

@@ -301,18 +301,11 @@ section.gallery {
   }
 }
 
-.card .card-slide {
+.card-slide {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 1rem;
-  opacity: 0;
-
-  &:first-child {
-    opacity: 1;
-  }
 }
 
 @mixin card-slideshow($n, $slot, $fade) {
