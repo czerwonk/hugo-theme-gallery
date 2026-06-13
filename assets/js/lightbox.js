@@ -27,7 +27,7 @@ if (gallery) {
       isButton: true,
       html: {
         isCustomSVG: true,
-        inner: '<path d="M4 4H12V6H6V12H4ZM28 4H20V6H26V12H28ZM28 28H20V26H26V20H28ZM4 28H12V26H6V20H4Z" id="pswp__icn-fullscreen-enter"/><path hidden id="pswp__icn-fullscreen-exit" d="M10 4H12V12H4V10H10ZM22 4H20V12H28V10H22ZM22 28H20V20H28V22H22ZM10 28H12V20H4V22H10Z"/>',
+        inner: '<path d="M2 2H14V5H5V14H2ZM30 2H18V5H27V14H30ZM30 30H18V27H27V18H30ZM2 30H14V27H5V18H2Z" id="pswp__icn-fullscreen-enter"/><path hidden id="pswp__icn-fullscreen-exit" d="M2 8H8V2H11V11H2ZM30 8H24V2H21V11H30ZM30 24H24V30H21V21H30ZM2 24H8V30H11V21H2Z"/>',
         outlineID: "pswp__icn-fullscreen-enter",
       },
       title: "Toggle fullscreen",
