@@ -5,7 +5,7 @@
 {{ $full := $image.Filter (slice images.AutoOrient (images.Process (printf "fit %dx%d" $fullSize $fullSize))) }}
 {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
 {{ $thumbnail = partial "apply-border.html" (dict "image" $thumbnail) }}
-{{ $full = partial "apply-border.html" (dict "image" $full "strokeOverride" (site.Params.gallery.strokeSizeFull | default 0 | int)) }}
+{{ $full = partial "apply-border.html" (dict "image" $full "full" true) }}
 
 {{ $href := $image.RelPermalink }}
 {{ if not .publishResources }}{{ $href = $full.RelPermalink }}{{ end }}
