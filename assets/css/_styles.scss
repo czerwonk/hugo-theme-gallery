@@ -260,6 +260,8 @@ section.gallery {
     aspect-ratio: 3/2;
     width: 100%;
     border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
   }
 
   & > img,
@@ -296,6 +298,51 @@ section.gallery {
       font-size: 0.875rem;
       line-height: 1.4286;
     }
+  }
+}
+
+.card-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  opacity: 0;
+
+  &:first-child {
+    opacity: 1;
+  }
+}
+
+@mixin card-slideshow($n, $slot, $fade) {
+  .card:hover .card-slides-#{$n} .card-slide {
+    animation: card-cycle-#{$n} #{$n * 2}s linear infinite;
+    animation-delay: calc((var(--i) - #{$n}) * 2s);
+  }
+
+  @keyframes card-cycle-#{$n} {
+    0%,
+    #{$slot - $fade}% { opacity: 1; }
+    #{$slot}%,
+    #{100 - $fade}% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}
+
+// N=2: 50% slot, 10% fade  N=3: 33.4% slot, 6.7% fade  N=4: 25% slot, 5% fade  N=5: 20% slot, 4% fade
+@include card-slideshow(2, 50, 10);
+@include card-slideshow(3, 33.4, 6.7);
+@include card-slideshow(4, 25, 5);
+@include card-slideshow(5, 20, 4);
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover .card-slide {
+    animation: none;
+  }
+
+  .card-slide:not(:first-child) {
+    display: none;
   }
 }
 

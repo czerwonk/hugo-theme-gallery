@@ -1,9 +1,18 @@
 {{ $gallery := partial "get-gallery.html" . }}
 {{ with $gallery }}
   <a class="card" href="{{ .page.RelPermalink }}" title="{{ .page.Title }}">
-    <figure style="background-color: {{ .color }}">
-      <img class="lazyload" width="{{ .thumbnail.Width }}" height="{{ .thumbnail.Height }}" data-src="{{ .thumbnail.RelPermalink }}" alt="{{ .page.Title }}" />
-    </figure>
+    {{ $count := len .previews }}
+    {{ if gt $count 1 }}
+      <figure class="card-slides-{{ $count }}" style="background-color: {{ .color }}">
+        {{ range $i, $img := .previews }}
+          <img class="lazyload card-slide" style="--i: {{ $i }}" width="{{ $img.Width }}" height="{{ $img.Height }}" data-src="{{ $img.RelPermalink }}" alt="{{ $.page.Title }}" />
+        {{ end }}
+      </figure>
+    {{ else }}
+      <figure style="background-color: {{ .color }}">
+        <img class="lazyload" width="{{ .thumbnail.Width }}" height="{{ .thumbnail.Height }}" data-src="{{ .thumbnail.RelPermalink }}" alt="{{ .page.Title }}" />
+      </figure>
+    {{ end }}
     <div>
       <h2>{{ .page.Title }}</h2>
       <p>

@@ -10,6 +10,16 @@
   {{ $thumbnail := $featured.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
   {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
   {{ $thumbnail = partial "apply-border.html" (dict "image" $thumbnail) }}
+  {{ $previews := slice $thumbnail }}
+  {{ range $images }}
+    {{ if lt (len $previews) 5 }}
+      {{ if ne .RelPermalink $featured.RelPermalink }}
+        {{ $t := .Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
+        {{ $t = partial "apply-border.html" (dict "image" $t) }}
+        {{ $previews = $previews | append $t }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
   {{ $imageCount := 0 }}
   {{ $albumCount := 0 }}
   {{ if .IsPage }}
@@ -24,6 +34,7 @@
     "page" $
     "images" $images
     "thumbnail" $thumbnail
+    "previews" $previews
     "color" $color
     "albumCount" $albumCount
     "imageCount" $imageCount
