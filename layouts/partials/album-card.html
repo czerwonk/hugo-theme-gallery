@@ -2,10 +2,11 @@
 {{ with $gallery }}
   <a class="card" href="{{ .page.RelPermalink }}" title="{{ .page.Title }}">
     {{ $count := len .previews }}
+    {{ $title := .page.Title }}
     {{ if gt $count 1 }}
       <figure class="card-slides-{{ $count }}" style="background-color: {{ .color }}">
         {{ range $i, $img := .previews }}
-          <img class="lazyload card-slide" style="--i: {{ $i }}" width="{{ $img.Width }}" height="{{ $img.Height }}" data-src="{{ $img.RelPermalink }}" alt="{{ $.page.Title }}" />
+          <img class="lazyload card-slide" style="--i: {{ $i }}" width="{{ $img.Width }}" height="{{ $img.Height }}" data-src="{{ $img.RelPermalink }}" alt="{{ $title }}" />
         {{ end }}
       </figure>
     {{ else }}
