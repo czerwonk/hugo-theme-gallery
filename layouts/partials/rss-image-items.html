@@ -9,18 +9,7 @@
   {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
   <guid>{{ .page.Permalink }}#{{ .image.Name | urlize }}</guid>
   {{- $thumbnail := .image.Filter (slice images.AutoOrient (images.Process "fill 900x600")) -}}
-  {{- $origWidth := $thumbnail.Width -}}
-  {{- $fullSize := site.Params.gallery.fullSize | default 1600 | int -}}
-  {{- $strokeSize := site.Params.gallery.strokeSize | default 0 | int -}}
-  {{- if gt $strokeSize 0 -}}
-    {{- $thumbStroke := div (mul $strokeSize $origWidth) $fullSize -}}
-    {{- $thumbnail = $thumbnail.Filter (images.Padding $thumbStroke (site.Params.gallery.strokeColor | default "#000000")) -}}
-  {{- end -}}
-  {{- $borderSize := site.Params.gallery.borderSize | default 0 | int -}}
-  {{- if gt $borderSize 0 -}}
-    {{- $thumbBorder := div (mul $borderSize $origWidth) $fullSize -}}
-    {{- $thumbnail = $thumbnail.Filter (images.Padding $thumbBorder (site.Params.gallery.borderColor | default "#ffffff")) -}}
-  {{- end }}
+  {{- $thumbnail = partial "apply-border.html" (dict "image" $thumbnail) -}}
   <media:content url="{{ $thumbnail.Permalink }}" type="image/jpeg"/>
   <description>
     &lt;img src=&quot;{{ $thumbnail.Permalink }}&quot; /&gt;

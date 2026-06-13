@@ -1,0 +1,15 @@
+{{/* Input: {image}. Returns image with stroke and border applied based on site.Params.gallery. */}}
+{{ $image := .image }}
+{{ $origWidth := $image.Width }}
+{{ $fullSize := site.Params.gallery.fullSize | default 1600 | int }}
+{{ $strokeSize := site.Params.gallery.strokeSize | default 0 | int }}
+{{ if gt $strokeSize 0 }}
+  {{ $stroke := div (mul $strokeSize $origWidth) $fullSize }}
+  {{ $image = $image.Filter (images.Padding $stroke (site.Params.gallery.strokeColor | default "#000000")) }}
+{{ end }}
+{{ $borderSize := site.Params.gallery.borderSize | default 0 | int }}
+{{ if gt $borderSize 0 }}
+  {{ $border := div (mul $borderSize $origWidth) $fullSize }}
+  {{ $image = $image.Filter (images.Padding $border (site.Params.gallery.borderColor | default "#ffffff")) }}
+{{ end }}
+{{ return $image }}
