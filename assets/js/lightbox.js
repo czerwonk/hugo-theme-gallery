@@ -12,7 +12,7 @@ if (gallery) {
     showHideAnimationType: "zoom",
     bgOpacity: 1,
     pswpModule: PhotoSwipe,
-    imageClickAction: "close",
+    imageClickAction: "zoom",
     closeTitle: params.closeTitle,
     zoomTitle: params.zoomTitle,
     arrowPrevTitle: params.arrowPrevTitle,
