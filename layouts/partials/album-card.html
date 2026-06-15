@@ -6,7 +6,8 @@
     {{ if gt $count 1 }}
       <figure class="card-slides-{{ $count }}" style="background-color: {{ .color }}">
         {{ range $i, $img := .previews }}
-          <img class="lazyload card-slide" style="--i: {{ $i }}" width="{{ $img.Width }}" height="{{ $img.Height }}" data-src="{{ $img.RelPermalink }}" alt="{{ $title }}" />
+          {{ $slot := cond (eq $i 0) (sub $count 1) (sub $i 1) }}
+          <img class="lazyload card-slide" style="--i: {{ $slot }}" width="{{ $img.Width }}" height="{{ $img.Height }}" data-src="{{ $img.RelPermalink }}" alt="{{ $title }}" />
         {{ end }}
       </figure>
     {{ else }}
