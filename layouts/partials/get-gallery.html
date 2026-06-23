@@ -1,25 +1,60 @@
 {{ $gallery := "" }}
 {{ $images :=  where (.Resources.ByType "image") "Params.hidden" "ne" true }}
 {{ if gt (len $images) 0 }}
-  {{ $covers := where (.Resources.ByType "image") "Params.cover" "eq" true }}
-  {{ $cover := "" }}
-  {{ if ge (len $covers) 0 }}
-    {{ $cover = index $covers 0 }}
+  {{ $featured := "" }}
+  {{ $featuredImages := slice }}
+
+  {{ if .Params.featured }}
+    {{ range .Params.featured }}
+      {{ $img := $.Resources.GetMatch . }}
+      {{ if $img }}
+        {{ $featuredImages = $featuredImages | append $img }}
+      {{ end }}
+    {{ end }}
   {{ end }}
-  {{ $featured := $cover | default ((.Resources.ByType "image").GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}
+
+  {{ if gt (len $featuredImages) 0 }}
+    {{ $featured = index $featuredImages 0 }}
+  {{ else }}
+    {{ $covers := where (.Resources.ByType "image") "Params.cover" "eq" true }}
+    {{ $cover := "" }}
+    {{ if ge (len $covers) 0 }}
+      {{ $cover = index $covers 0 }}
+    {{ end }}
+    {{ $featured = $cover | default ((.Resources.ByType "image").GetMatch (.Params.featured_image | default "*feature*")) | default (index $images 0) }}
+  {{ end }}
+
   {{ $thumbnail := $featured.Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
   {{ $color := index $thumbnail.Colors 0 | default "transparent" }}
   {{ $thumbnail = partial "apply-border.html" (dict "image" $thumbnail) }}
+
   {{ $previews := slice $thumbnail }}
+  {{ range after 1 $featuredImages }}
+    {{ if lt (len $previews) 5 }}
+      {{ $t := .Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
+      {{ $t = partial "apply-border.html" (dict "image" $t) }}
+      {{ $previews = $previews | append $t }}
+    {{ end }}
+  {{ end }}
+
+  {{ $featuredPermalinks := slice }}
+  {{ range $featuredImages }}
+    {{ $featuredPermalinks = $featuredPermalinks | append .RelPermalink }}
+  {{ end }}
+  {{ if not (in $featuredPermalinks $featured.RelPermalink) }}
+    {{ $featuredPermalinks = $featuredPermalinks | append $featured.RelPermalink }}
+  {{ end }}
+
   {{ range $images }}
     {{ if lt (len $previews) 5 }}
-      {{ if ne .RelPermalink $featured.RelPermalink }}
+      {{ if not (in $featuredPermalinks .RelPermalink) }}
         {{ $t := .Filter (slice images.AutoOrient (images.Process "fit 600x600")) }}
         {{ $t = partial "apply-border.html" (dict "image" $t) }}
         {{ $previews = $previews | append $t }}
       {{ end }}
     {{ end }}
   {{ end }}
+
   {{ $imageCount := 0 }}
   {{ $albumCount := 0 }}
   {{ if .IsPage }}
