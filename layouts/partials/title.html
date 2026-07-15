@@ -1,6 +1,8 @@
   <hgroup>
     {{ with site.Params.banner }}
-      <a href="{{ "/" | relURL }}"><img class="banner" src="{{ . | relURL }}" alt="{{ $.Site.Title }}"></a>
+      {{ $width := site.Params.bannerWidth }}
+      {{ $height := site.Params.bannerHeight }}
+      <a href="{{ "/" | relURL }}"><img class="banner" src="{{ . | relURL }}" alt="{{ $.Site.Title }}"{{ with $width }} width="{{ . }}"{{ end }}{{ with $height }} height="{{ . }}"{{ end }}></a>
     {{ end }}
 {{ if .Title }}
     <h1>{{ .Title }}</h1>
