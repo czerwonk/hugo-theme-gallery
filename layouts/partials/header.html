@@ -7,7 +7,7 @@
     </a>
   {{ else }}
     <a class="btn" href="{{ .Site.Home.RelPermalink }}">
-      {{ .Site.Title }}
+      {{ if not site.Params.banner }}{{ .Site.Title }}{{ end }}
     </a>
   {{ end }}
   {{ if site.Menus.main }}
