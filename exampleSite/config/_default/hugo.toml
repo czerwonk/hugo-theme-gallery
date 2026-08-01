@@ -35,6 +35,8 @@ title = "Gallery"
     #boxSpacing = 10
     #targetRowHeight = 288
     #targetRowHeightTolerance = 0.25
+    #sortBy = "Date"
+    #sortOrder = "asc"
 
 [outputs]
   home = ["HTML", "RSS"]
