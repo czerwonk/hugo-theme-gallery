@@ -2,6 +2,8 @@
 
 A very simple and opinionated photo gallery theme for Hugo.
 
+This is a fork of [nicokaiser/hugo-theme-gallery](https://github.com/nicokaiser/hugo-theme-gallery) by [Nico Kaiser](https://kaiser.me/), which has since diverged significantly and is no longer synced with upstream.
+
 - [Demo](https://nicokaiser.github.io/hugo-theme-gallery/)
 - [Example site source](https://github.com/nicokaiser/hugo-theme-gallery/tree/main/exampleSite)
 
@@ -23,6 +25,18 @@ A very simple and opinionated photo gallery theme for Hugo.
 
 **Important note: do not try to use WebP images.** The golang WebP implementation used in Hugo has a bug which leads to wrong image levels (dull looking images) upon resize. See [nicokaiser/hugo-theme-gallery#102](https://github.com/nicokaiser/hugo-theme-gallery/issues/102) for more details.
 
+### Additional features in this fork
+
+- Configurable banner (logo) shown in the header, linking back to the home page, with custom dimensions
+- Configurable favicon and apple-touch-icon paths
+- EXIF-based camera/lens/film stock detection, with filterable `/cameras` and `/lenses` pages
+- Configurable image borders/frames
+- Fullscreen lightbox with mouse zoom and click-to-open
+- Crossfade slideshow on album cover hover
+- Multi-layer menu structure
+- Recent uploads page and per-gallery RSS feeds
+- Site-wide default sort order for all galleries
+
 ## Installation
 
 This theme requires Hugo Extended >= 0.123.0. Dependencies are bundled, so no Node.js/NPM and PostCSS is needed.
@@ -40,13 +54,13 @@ Then add the theme to your `hugo.toml`:
 ```toml
 [module]
   [[module.imports]]
-    path = "github.com/nicokaiser/hugo-theme-gallery/v4"
+    path = "github.com/czerwonk/danalog-hugo-theme/v4"
 ```
 
 ### As Git Submodule
 
 ```sh
-git submodule add --depth=1 https://github.com/nicokaiser/hugo-theme-gallery.git themes/gallery
+git submodule add --depth=1 https://github.com/czerwonk/danalog-hugo-theme.git themes/gallery
 ```
 
 ## Usage
@@ -293,4 +307,5 @@ You can add additional JavaScript in `assets/js/custom.js`.
 
 ## Author
 
-- [Nico Kaiser](https://kaiser.me/)
+- [Nico Kaiser](https://kaiser.me/) (original [hugo-theme-gallery](https://github.com/nicokaiser/hugo-theme-gallery))
+- [Daniel Brendgen-Czerwonk](https://github.com/czerwonk) (this fork)

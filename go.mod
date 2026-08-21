@@ -1,3 +1,3 @@
-module github.com/nicokaiser/hugo-theme-gallery/v4
+module github.com/czerwonk/danalog-hugo-theme/v4
 
 go 1.20

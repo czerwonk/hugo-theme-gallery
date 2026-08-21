@@ -1,7 +1,7 @@
-module github.com/nicokaiser/hugo-gallery-starter
+module github.com/czerwonk/danalog-hugo-theme/exampleSite
 
 go 1.20
 
-require github.com/nicokaiser/hugo-theme-gallery/v4 v4.9.1 // indirect
+require github.com/czerwonk/danalog-hugo-theme/v4 v4.9.1 // indirect
 
-replace github.com/nicokaiser/hugo-theme-gallery/v4 => ../
+replace github.com/czerwonk/danalog-hugo-theme/v4 => ../
